@@ -406,3 +406,84 @@
 * **FEAT (UI/UX):** Melhorada η exibição de dados não-numéricos (Fix da v1.8.0).  
 * **STYLE:** Dados ausentes (ex: "--", null) são mostrados como um hífen (-).  
 * **STYLE:** Dados não-aplicáveis (ex: "fundo com...") são mostrados como um ícone de Informação (\<Info /\>) com um tooltip.
+
+## **v1.8.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Implementada limpeza de dados para rentabilidades (hífen para todos os não-números).
+
+## **v1.7.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatorado o "Painel de Detalhes" (linha expansível) para um layout de lista de 2 colunas com ícones.
+
+## **v1.6.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatoração drástica da tabela para "Linhas Expansíveis" (Accordion Rows) para resolver o scroll horizontal.
+
+## **v1.5.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatorada a coluna "Resgate" para (D+X) com tooltip e ordenação.
+
+## **v1.4.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** O "Painel de Filtros" agora é retrátil (accordion/sanfona) e fechado por padrão.
+
+## **v1.3.0 (09/11/2025)**
+
+* **FEAT:** Adicionada funcionalidade de "Ajuste de Rentabilidade (IR)" (Comparação Líquida).
+
+## **v1.2.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Implementada "Revelação Progressiva" (Filtros e Status ocultos até o load).
+
+## **v1.1.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Corrigida a redundância do botão "Carregar" (Estado vazio clicável).
+
+## **v1.0.0 (09/11/2025)**
+
+* **CHORE (Branding):** Renomeado o aplicativo para "LaminasX".  
+* **FEAT (UI/UX):** Refatoração principal do layout (v1.0.0), movendo o "Carregar" para o cabeçalho da tabela.
+
+## **v0.9.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatorado o "Painel de Controle" para 2 colunas (Layout ruim).
+
+## **v0.8.1 (09/11/2025)**
+
+* **FIX (UI):** Removido um comentário de desenvolvimento que aparecia na interface.
+
+## **v0.8.0 (09/11/2025)**
+
+* **FEAT:** Adicionado "Filtro de Performance (vs. CDI)".
+
+## **v0.7.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatorada a interface (Painel de Controle único e vertical).
+
+## **v0.6.0 (09/11/2025)**
+
+* **FEAT (UI/UX):** Refatorada a coluna de CNPJ (separação de Copiar e Link Externo).
+
+## **v0.5.0 (09/11/2025)**
+
+* **CHORE (Branding):** Renomeado o aplicativo para "FundosX: Analisador de Lâminas".
+
+## **v0.4.0 (09/11/2025)**
+
+* **FEAT:** Adicionada "Barra de Status" (Total de Fundos, Fundos Visíveis, Média).
+
+## **v0.3.1 (09/11/2025)**
+
+* **CHORE:** Movido o CHANGELOG para dentro do arquivo .jsx.
+
+## **v0.2.1 (09/11/2025)**
+
+* **FIX:** Corrigido o ReferenceError: Filter is not defined.
+
+## **v0.2.0 (09/11/2025)**
+
+* **FEAT:** UI refatorada para o estilo do "SharpeX".
+
+## **v0.1.0 (09/11/2025)**
+
+* **FEAT:** Versão inicial (Prova de Conceito) convertida de HTML/JS para React.
