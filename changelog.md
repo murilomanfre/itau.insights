@@ -6,6 +6,13 @@
 -->
 # **Itau Insights: Histórico de Versões**
 
+## v3.29.0 (15/11/2025)
+
+*   **FIX (Core/JS):** Corrigida uma inconsistência de implementação da v3.27.0. A refatoração que invoca `resetApplication()` ao carregar dados, documentada anteriormente mas não implementada, foi agora aplicada corretamente.
+*   **FEAT (Core/JS):** Criada a nova função `resetApplication()` em `app.js` para centralizar a lógica de limpeza de estado, tornando o código mais robusto e manutenível.
+*   **REFAT (API/JS):** A função `handleLoadFromGithub` agora utiliza `resetApplication()`, garantindo que falhas de rede não deixem dados antigos na tela e corrigindo de forma definitiva o bug `BUG_InconsistentData_AfterAPIFailure`.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.28.0 (15/11/2025)
 
 *   **FIX (Core/JS):** Corrigido o bug `BUG_DataDisappears_AfterSanitization`. A sanitização de dados excessivamente agressiva na função `runDataPipeline` foi removida, pois estava corrompendo objetos de dados e impedindo a renderização da tabela.

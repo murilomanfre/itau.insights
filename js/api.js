@@ -21,13 +21,8 @@ function processLoadedData(json) {
 }
 
 async function handleLoadFromGithub() {
-  ui.emptyState.classList.add('hidden');
-  ui.dashboardState.classList.remove('hidden');
-  appState.isLoading = true;
-  appState.error = null;
-  appState.allData = [];
-  appState.expandedRows.clear();
-  runDataPipeline();
+  // v3.27.0: Garante que o estado anterior seja limpo antes da busca.
+  resetApplication();
   
   // v3.21.1: A URL agora aponta para um arquivo que contém os dados em Base64.
   var GITHUB_URL_BASE64 = "https://raw.githubusercontent.com/murilomanfre/itau.insights/76621291363e8d7bc4f0f242c9bb43bf1b831c81/dados.json";

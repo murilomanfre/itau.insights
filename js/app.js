@@ -30,6 +30,34 @@ function initializeApp() {
   // --- FIM MODO DEV ---
 }
 
+/**
+ * Reseta completamente o estado da aplicação para os valores iniciais.
+ * Limpa todos os dados, filtros, busca, paginação e erros.
+ * Centraliza a lógica de "master reset" para ser reutilizável.
+ */
+function resetApplication() {
+  // Reseta o estado de dados e UI
+  appState.isLoading = true;
+  appState.error = null;
+  appState.allData = [];
+  appState.processedData = [];
+  appState.expandedRows.clear();
+  appState.currentPage = 1;
+
+  // Reseta filtros e busca
+  appState.filterQuery = '';
+  appState.searchMode = 'text';
+  appState.searchError = null;
+  appState.filters.risco = 'todos';
+  appState.filters.isInfraOnly = false;
+  appState.isPerfFilterActive = false;
+  appState.taxBracket = 'bruta';
+
+  // Atualiza a UI para refletir o estado limpo
+  ui.emptyState.classList.add('hidden');
+  ui.dashboardState.classList.remove('hidden');
+}
+
 function runDataPipeline() {
   var taxBracketMatch = TAX_BRACKETS.find(function(b) { return b.value === appState.taxBracket; });
   var currentTaxRate = (taxBracketMatch ? taxBracketMatch.rate : 0) || 0;
