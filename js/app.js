@@ -30,6 +30,19 @@ function initializeApp() {
   // --- FIM MODO DEV ---
 }
 
+function sanitizeHTML(str) {
+  if (typeof str !== 'string') return str;
+  return str.replace(/[&<>'"]/g,
+    tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag)
+  );
+}
+
 function runDataPipeline() {
   var taxBracketMatch = TAX_BRACKETS.find(function(b) { return b.value === appState.taxBracket; });
   var currentTaxRate = (taxBracketMatch ? taxBracketMatch.rate : 0) || 0;
@@ -42,7 +55,7 @@ function runDataPipeline() {
     var newItem = {};
     for (var key in item) {
       if (Object.prototype.hasOwnProperty.call(item, key)) {
-        newItem[key] = item[key];
+        newItem[key] = sanitizeHTML(item[key]);
       }
     }
 
