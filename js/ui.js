@@ -554,17 +554,20 @@ function updateTaxFilterUI(isInfraFilterActive) {
 function renderPagination() {
   var totalItems = appState.processedData.length;
   var totalPages = Math.ceil(totalItems / appState.itemsPerPage);
+  var hasData = totalItems > 0;
 
-  if (totalPages <= 1) {
+  // Se não há dados, esconde tudo e sai.
+  if (!hasData) {
     if (ui.paginationControls) ui.paginationControls.classList.add('hidden');
     return;
   }
 
+  // Se há dados, sempre mostra o painel de paginação.
   if (ui.paginationControls) ui.paginationControls.classList.remove('hidden');
 
-  var startItem = totalItems === 0 ? 0 : (appState.currentPage - 1) * appState.itemsPerPage + 1;
+  // 1. Renderiza o sumário (sempre visível quando há dados)
+  var startItem = (appState.currentPage - 1) * appState.itemsPerPage + 1;
   var endItem = Math.min(startItem + appState.itemsPerPage - 1, totalItems);
-
   var filtersActive = appState.processedData.length !== appState.allData.length;
   var baseSummary = appState.isMobile ?
     (startItem + '-' + endItem + ' / ' + totalItems) :
@@ -576,18 +579,21 @@ function renderPagination() {
       baseSummary;
   }
 
-  if (ui.prevPageBtn) ui.prevPageBtn.disabled = appState.currentPage === 1;
-  if (ui.nextPageBtn) ui.nextPageBtn.disabled = appState.currentPage === totalPages;
+  // 2. Controla a visibilidade dos botões de navegação
+  if (ui.prevPageBtn) ui.prevPageBtn.disabled = (appState.currentPage === 1);
+  if (ui.nextPageBtn) ui.nextPageBtn.disabled = (appState.currentPage === totalPages);
 
-  if (ui.pageNumbersContainer) ui.pageNumbersContainer.innerHTML = "";
-
-  if (!appState.isMobile && ui.pageNumbersContainer) {
+  var pageButtonsContainer = document.getElementById('pageButtonsContainer'); // Container dos botões
+  if (totalPages <= 1) {
+    if (pageButtonsContainer) pageButtonsContainer.classList.add('hidden');
+  } else {
+    if (pageButtonsContainer) pageButtonsContainer.classList.remove('hidden');
+    // Renderiza os números das páginas apenas se houver mais de uma página
+    if (!appState.isMobile && ui.pageNumbersContainer) {
+      ui.pageNumbersContainer.innerHTML = ""; // Limpa antes de renderizar
     var pagesToShow = [];
     if (totalPages <= 7) {
-      pagesToShow = [];
-      for (var i = 0; i < totalPages; i++) {
-        pagesToShow.push(i + 1);
-      }
+        for (var i = 1; i <= totalPages; i++) { pagesToShow.push(i); }
     } else {
       pagesToShow = [1];
       if (appState.currentPage > 3) pagesToShow.push("...");
@@ -598,30 +604,31 @@ function renderPagination() {
       pagesToShow.push(totalPages);
     }
 
-    var pageHtml = "";
-    pagesToShow.forEach(function(page, index) {
-      if (page === "...") {
-        pageHtml += '<span class="px-3 py-2 text-sm text-gray-500">...</span>';
-      } else {
-        pageHtml += (
-          '<button' +
-          ' data-page="' + page + '"' +
-          ' class="page-number-btn px-3 py-2 text-sm border font-medium rounded-lg transition duration-150 ' +
-          (page === appState.currentPage ?
-            "z-10 brand-bg text-white border-orange-600 shadow-sm" :
-            "bg-white border-gray-300 text-gray-700 hover:bg-gray-50") +
-          '"' +
-          '>' +
-          page +
-          '</button>'
-        );
-      }
-    });
-    ui.pageNumbersContainer.innerHTML = pageHtml;
+      var pageHtml = "";
+      pagesToShow.forEach(function(page) {
+        if (page === "...") {
+          pageHtml += '<span class="px-3 py-2 text-sm text-gray-500">...</span>';
+        } else {
+          pageHtml += (
+            '<button' +
+            ' data-page="' + page + '"' +
+            ' class="page-number-btn px-3 py-2 text-sm border font-medium rounded-lg transition duration-150 ' +
+            (page === appState.currentPage ?
+              "z-10 brand-bg text-white border-orange-600 shadow-sm" :
+              "bg-white border-gray-300 text-gray-700 hover:bg-gray-50") +
+            '"' +
+            '>' +
+            page +
+            '</button>'
+          );
+        }
+      });
+      ui.pageNumbersContainer.innerHTML = pageHtml;
 
-    document.querySelectorAll('.page-number-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() { handlePageChange(Number(btn.dataset.page)); });
-    });
+      document.querySelectorAll('.page-number-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { handlePageChange(Number(btn.dataset.page)); });
+      });
+    }
   }
 }
 

@@ -6,6 +6,13 @@
 -->
 # **Itau Insights: Histórico de Versões**
 
+## v3.30.0 (15/11/2025)
+
+*   **FIX (UI/JS):** Corrigido o bug em que o sumário de paginação ("Mostrando X-Y de Z") desaparecia ao aplicar filtros que resultavam em uma única página de dados.
+*   **REFAT (UI/JS):** A função `renderPagination` foi refatorada para garantir que o sumário de resultados seja sempre visível. A lógica agora esconde seletivamente apenas os botões de navegação de página quando não são necessários.
+*   **CHORE (HTML):** Adicionado o `id="pageButtonsContainer"` no `index.html` para permitir o controle seletivo da visibilidade dos botões de navegação.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.29.0 (15/11/2025)
 
 *   **FIX (Core/JS):** Corrigida uma inconsistência de implementação da v3.27.0. A refatoração que invoca `resetApplication()` ao carregar dados, documentada anteriormente mas não implementada, foi agora aplicada corretamente.
