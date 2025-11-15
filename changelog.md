@@ -1,5 +1,10 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.32.1 (15/11/2025)
+
+*   **CHORE (Docs):** Adicionada a indicação `(UTC)` aos timestamps nos cabeçalhos dos arquivos para esclarecer que o horário é baseado no Tempo Universal Coordenado e não no fuso horário local.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.32.0 (15/11/2025)
 
 *   **FEAT (Core/JS):** Implementada uma função para gerar nomes de fundos mais curtos e legíveis, removendo termos genéricos como "Fundo de Investimento", "Multimercado", etc. O nome original (`fullName`) é preservado.
