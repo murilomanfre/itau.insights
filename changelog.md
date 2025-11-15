@@ -1,8 +1,16 @@
 <!--
  * v3.26.0
  * 15/11/2025 04:04
+ * v3.27.0
+ * 2025-11-15 18:17 (Local)
 -->
 # **Itau Insights: Histórico de Versões**
+
+## v3.27.0 (15/11/2025)
+
+*   **FIX (Core/JS):** Corrigido o bug `BUG_InconsistentData_AfterAPIFailure`.
+*   **REFAT (JS):** A função `handleLoadFromGithub` (em `api.js`) agora invoca `resetApplication` antes de iniciar a busca de dados. Isso garante que, se a busca de rede falhar, o estado da aplicação seja completamente limpo, prevenindo a exibição de dados antigos junto com uma mensagem de erro.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
 
 ## v3.26.0 (15/11/2025)
 
