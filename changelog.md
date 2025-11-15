@@ -6,6 +6,12 @@
 -->
 # **Itau Insights: Histórico de Versões**
 
+## v3.28.0 (15/11/2025)
+
+*   **FIX (Core/JS):** Corrigido o bug `BUG_DataDisappears_AfterSanitization`. A sanitização de dados excessivamente agressiva na função `runDataPipeline` foi removida, pois estava corrompendo objetos de dados e impedindo a renderização da tabela.
+*   **REFAT (Security/JS):** A sanitização de dados foi refatorada para uma abordagem mais segura e precisa. Em vez de uma limpeza ampla, a função `escapeHtml` agora é aplicada diretamente nos pontos de renderização na UI (em `renderDesktopView`, `renderMobileCard`, e `renderDetailPanel`), prevenindo vulnerabilidades de XSS sem corromper os dados.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.27.0 (15/11/2025)
 
 *   **FIX (Core/JS):** Corrigido o bug `BUG_InconsistentData_AfterAPIFailure`.

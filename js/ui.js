@@ -391,7 +391,7 @@ function renderDesktopView(pageData) {
     var rentabilidadeHtml =
       '<div' +
       ' class="text-sm flex items-center ' + getPerformanceColor(rawValue) + '"' +
-      ' title="' + (title || titleContext || '') + '"' +
+      ' title="' + escapeHtml(title || titleContext || '') + '"' +
       '>' +
       displayNode +
       ((isNet && !isento) ? '<span class="text-red-600 ml-1">*</span>' : '') +
@@ -403,7 +403,7 @@ function renderDesktopView(pageData) {
       buildNomeComTag(item) +
       '</td>' +
       '<td class="px-3 py-3 whitespace-nowrap">' + rentabilidadeHtml + '</td>' +
-      '<td class="px-3 py-3 whitespace-nowrap text-sm text-gray-700" title="' + (item.resgateOriginal || '') + '">' +
+      '<td class="px-3 py-3 whitespace-nowrap text-sm text-gray-700" title="' + escapeHtml(item.resgateOriginal || '') + '">' +
       (item.resgateDisplay || '-') +
       '</td>' +
       '<td class="px-3 py-3 whitespace-nowrap">' +
@@ -470,7 +470,7 @@ function renderDetailPanel(item) {
     return detailItem(ICONS.Calendar, label,
       '<div' +
       ' class="text-base font-medium flex items-center ' + getPerformanceColor(rawValue) + '"' +
-      ' title="' + (title || titleContext || '') + '"' +
+      ' title="' + escapeHtml(title || titleContext || '') + '"' +
       '>' +
       displayNode +
       ((isNet && !isento) ? '<span class="text-red-600 ml-1">*</span>' : '') +
@@ -493,7 +493,7 @@ function renderDetailPanel(item) {
       '<p class="text-base font-medium text-gray-900">' + formatCurrencyString(item.aplicacao_inicial) + '</p>'
     ) +
     detailItem(ICONS.Tag, "Taxa Máx.",
-      '<p class="text-base font-medium text-gray-900 flex items-center" title="' + (taxaMaxima.title || '') + '">' +
+      '<p class="text-base font-medium text-gray-900 flex items-center" title="' + escapeHtml(taxaMaxima.title || '') + '">' +
       taxaMaxima.displayNode +
       '</p>'
     ) +
@@ -663,7 +663,7 @@ function renderMobileCard(item) {
     '<!-- Rentabilidade (Destaque) -->' +
     '<div' +
     ' class="col-span-1"' +
-    ' title="' + (title || titleContext || '') + '"' +
+    ' title="' + escapeHtml(title || titleContext || '') + '"' +
     '>' +
     '<span class="text-xs text-gray-500">Rentab. (' + periodLabels[displayPeriodKey] + ')</span>' +
     '<div class="text-xl font-bold ' + getPerformanceColor(rawValue) + ' flex items-center">' +
@@ -685,7 +685,7 @@ function renderMobileCard(item) {
     '<!-- Resgate -->' +
     '<div class="col-span-1">' +
     '<span class="text-xs text-gray-500">Resgate</span>' +
-    '<div class="text-base font-medium text-gray-900" title="' + (item.resgateOriginal || '') + '">' +
+    '<div class="text-base font-medium text-gray-900" title="' + escapeHtml(item.resgateOriginal || '') + '">' +
     (item.resgateDisplay || '-') +
     '</div>' +
     '</div>' +
