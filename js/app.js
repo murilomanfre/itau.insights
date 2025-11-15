@@ -1,6 +1,7 @@
 // --- PONTO DE ENTRADA E PIPELINE DE DADOS ---
 
 document.addEventListener("DOMContentLoaded", function() {
+  ui.exportCsvBtn = document.getElementById("exportCsvBtn"); // FEAT_DataExport_CSV
   initializeApp();
 });
 

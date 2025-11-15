@@ -698,3 +698,66 @@ function renderMobileCard(item) {
     '</div>'
   );
 }
+
+/**
+ * Converte um array de objetos JSON para uma string no formato CSV.
+ * @param {Array<Object>} data O array de objetos a ser convertido.
+ * @returns {string} A string formatada em CSV.
+ */
+function convertToCSV(data) {
+  if (!data || data.length === 0) {
+    return "";
+  }
+
+  var headers = [
+    "Nome do Fundo", "CNPJ", "Risco", "Aplicação Inicial", "Resgate",
+    "Rentabilidade 12 Meses", "Rentabilidade No Ano", "Rentabilidade No Mês",
+    "Taxa Máxima", "Link da Lâmina"
+  ];
+
+  var rows = data.map(function(item) {
+    var values = [
+      item.nome,
+      (item.possivel_cnpj || []).join('; '), // Concatena múltiplos CNPJs
+      item.risco,
+      item.aplicacao_inicial,
+      item.resgateOriginal,
+      item['12_meses'],
+      item.no_ano,
+      item.no_mes,
+      item.taxa_maxima,
+      item.lamina_link
+    ];
+
+    return values.map(function(value) {
+      var strValue = String(value === null || value === undefined ? '' : value);
+      // Se o valor contém vírgula, aspas ou quebra de linha, coloca entre aspas duplas
+      if (strValue.search(/("|,|\n)/g) >= 0) {
+        strValue = '"' + strValue.replace(/"/g, '""') + '"';
+      }
+      return strValue;
+    }).join(',');
+  });
+
+  return [headers.join(',')].concat(rows).join('\n');
+}
+
+/**
+ * Inicia o download de dados no formato CSV.
+ * @param {string} csvContent O conteúdo do arquivo CSV.
+ * @param {string} fileName O nome do arquivo a ser baixado.
+ */
+function exportDataToCsv(csvContent, fileName) {
+  var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  var link = document.createElement("a");
+
+  if (link.download !== undefined) { // Feature detection
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}

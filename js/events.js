@@ -1,6 +1,7 @@
 // --- CONFIGURAÇÃO E MANIPULADORES DE EVENTOS (HANDLERS) ---
 
 function setupEventListeners() {
+  ui.exportCsvBtn.addEventListener("click", handleExportCsv); // FEAT_DataExport_CSV
   ui.fileInput.addEventListener("change", handleFileLoad);
   ui.retryGithubBtn.addEventListener("click", handleLoadFromGithub);
   ui.reloadGithubBtn.addEventListener("click", handleLoadFromGithub);
@@ -33,6 +34,22 @@ function handleResize() {
     updateUIForScreenSize();
     runDataPipeline();
   }
+}
+
+/**
+ * Manipulador para o evento de clique no botão de exportar para CSV.
+ */
+function handleExportCsv() {
+  if (appState.processedData.length === 0) {
+    alert("Não há dados filtrados para exportar.");
+    return;
+  }
+
+  var csvContent = convertToCSV(appState.processedData);
+  var date = new Date();
+  var timestamp = date.getFullYear().toString() + (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0');
+  var fileName = 'Itau_Insights_Export_' + timestamp + '.csv';
+  exportDataToCsv(csvContent, fileName);
 }
 
 function handleGlobalFilterChange(e) {
