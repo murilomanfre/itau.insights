@@ -19,6 +19,7 @@ function setupEventListeners() {
   window.addEventListener("resize", debounce(handleResize, 250));
   if (ui.infraFilterToggle) ui.infraFilterToggle.addEventListener('change', handleInfraFilterChange); // v3.22.0
   ui.modalCloseBtn.addEventListener("click", hideModal);
+  if (ui.showFullNameToggle) ui.showFullNameToggle.addEventListener('change', handleShowFullNameToggle); // FEAT: Listener para o novo toggle
 }
 
 function handleResize() {
@@ -34,6 +35,12 @@ function handleResize() {
     updateUIForScreenSize();
     runDataPipeline();
   }
+}
+
+// FEAT: Handler para o toggle de exibir nomes completos
+function handleShowFullNameToggle(e) {
+  appState.showFullNames = e.target.checked;
+  runDataPipeline();
 }
 
 /**

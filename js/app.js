@@ -104,7 +104,7 @@ function runDataPipeline() {
   var mode = appState.searchMode;
 
   if (mode === 'text' && query) {
-    data = data.filter(function(item) { return item.nome && normalizeString(item.nome).includes(query); });
+    data = data.filter(function(item) { return item.fullName && normalizeString(item.fullName).includes(query); });
   } else if (mode === 'cnpj' && query) {
     var normalizedQuery = query.replace(/[.\-/]/g, "");
     data = data.filter(function(item) {
@@ -129,7 +129,7 @@ function runDataPipeline() {
       var baseCdi = BENCHMARKS_CDI[appState.displayPeriod];
       var targetRate = baseCdi * appState.perfBenchmark;
       if (currentTaxRate > 0 && !isFundoIsento(item.nome)) {
-        targetRate = targetRate * (1.0 - currentTaxRate);
+        targetRate = targetRate * (1.0 - currentTaxRate); // A verificação de isenção usa o nome curto
       }
       var itemValue = parsePercent(item[appState.displayPeriod]);
       matchPerf = (itemValue !== null) && (itemValue >= targetRate);
@@ -140,7 +140,7 @@ function runDataPipeline() {
   // v3.22.0: Filtro para Fundos de Infraestrutura (adicionado após outros filtros)
   if (appState.filters.isInfraOnly) {
     data = data.filter(function(fundo) {
-      var nomeLower = fundo.nome.toLowerCase();
+      var nomeLower = fundo.fullName.toLowerCase(); // Filtro de infra deve usar o nome completo
       // Verifica se o nome do fundo contém alguma das palavras-chave
       return INFRA_KEYWORDS.some(function(keyword) {
         // Usamos indexOf para compatibilidade com ES5
@@ -155,7 +155,10 @@ function runDataPipeline() {
 
   var getSortValue = function(item, column) {
     switch (column) {
-      case "nome": return normalizeString(item.nome);
+      case "nome":
+        // FEAT: Ordena pelo nome que está sendo exibido (curto ou completo)
+        var nameToSort = appState.showFullNames ? item.fullName : item.nome;
+        return normalizeString(nameToSort);
       case "risco":
         var riscoNum = RISCO_ORDER_MAP[normalizeString(item.risco)];
         return riscoNum || 99;

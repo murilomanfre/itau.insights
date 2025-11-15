@@ -34,6 +34,7 @@ var appState = { // v3.17.9: var
   isAdvancedPanelOpen: false, // v3.13.0: Estado do painel (renomeado)
   isDevMobileOverride: null, // v3.17.9: Adicionado para Dev Toggle
 };
+appState.showFullNames = false; // FEAT: Novo estado para controlar a exibição dos nomes
 
 // --- REFERÊNCIAS DA UI ---
 var ui = { // v3.17.9: var
@@ -65,6 +66,7 @@ var ui = { // v3.17.9: var
   perfBenchmarkButtons: document.getElementById("perfBenchmarkButtons"),
   taxBracketButtons: document.getElementById("taxBracketButtons"),
   infraFilterToggle: document.getElementById("infraFilterToggle"), // v3.22.0
+  showFullNameToggle: document.getElementById("showFullNameToggle"), // FEAT: Novo toggle
   
   // v3.16.0: Containers da Tabela/Cards
   desktopTableContainer: document.getElementById("desktopTableContainer"),

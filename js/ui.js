@@ -196,7 +196,9 @@ function escapeHtml(str) {
  * @returns {string} O HTML do nome do fundo com a tag, se aplicável.
  */
 function buildNomeComTag(fundo) {
-  var nomeHtml = escapeHtml(fundo.nome);
+  // FEAT: Decide qual nome exibir com base no estado da aplicação
+  var displayName = appState.showFullNames ? fundo.fullName : fundo.nome;
+  var nomeHtml = escapeHtml(displayName);
   if (isFundoIsento(fundo.nome)) {
     nomeHtml += ' <span class="infra-tag ml-2 px-2 py-0.5 text-xs font-semibold rounded-full">Infra</span>';
   }
@@ -399,7 +401,7 @@ function renderDesktopView(pageData) {
 
     tableHtml +=
       '<tr class="main-row ' + rowClass + ' ' + (isExpanded ? 'expanded' : '') + '">' +
-      '<td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-gray-900" title="' + escapeHtml(item.nome) + '">' +
+      '<td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-gray-900" title="' + escapeHtml(item.fullName) + '">' + // Mostra o nome completo no tooltip
       buildNomeComTag(item) +
       '</td>' +
       '<td class="px-3 py-3 whitespace-nowrap">' + rentabilidadeHtml + '</td>' +
@@ -667,7 +669,7 @@ function renderMobileCard(item) {
     '<!-- Card Header (Nome + Botão) -->' +
     '<div class="flex justify-between items-start p-4 ' + (isExpanded ? 'border-b border-gray-200 bg-gray-50' : '') + '">' +
     '<div class="flex-1 min-w-0">' +
-    '<h4 class="text-base font-semibold text-gray-900" title="' + escapeHtml(item.nome) + '">' +
+    '<h4 class="text-base font-semibold text-gray-900" title="' + escapeHtml(item.fullName) + '">' + // Mostra o nome completo no tooltip
     buildNomeComTag(item) +
     '</div>' +
     '<button' +
@@ -738,7 +740,8 @@ function convertToCSV(data) {
 
   var rows = data.map(function(item) {
     var values = [
-      item.nome,
+      // FEAT: Garante que a exportação CSV sempre use o nome completo.
+      item.fullName,
       (item.possivel_cnpj || []).join('; '), // Concatena múltiplos CNPJs
       item.risco,
       item.aplicacao_inicial,

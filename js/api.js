@@ -1,11 +1,53 @@
 // --- LÓGICA DE CARREGAMENTO E API ---
 
+/**
+ * Gera um nome curto para um fundo removendo termos comuns.
+ * @param {string} fullName O nome completo do fundo.
+ * @returns {string} O nome curto gerado.
+ */
+function generateShortName(fullName) {
+  if (!fullName) return '';
+
+  // Lista de termos a serem removidos. A ordem pode ser importante.
+  // Inclui variações e siglas comuns no mercado brasileiro.
+  var termsToRemove = [
+    'FUNDO DE INVESTIMENTO EM COTAS DE FUNDOS DE INVESTIMENTO', 'FUNDO DE INVESTIMENTO EM COTAS', 'FUNDO DE INVESTIMENTO',
+    'CRÉDITO PRIVADO', 'RENDA FIXA', 'LONGO PRAZO', 'INVESTIMENTO NO EXTERIOR',
+    'MULTIMERCADO', 'REFERENCIADO', 'PREVIDÊNCIA', 'AÇÕES', 'CAMBIAL', 'SIMPLES',
+    'FIQ', 'FIC', 'FIRF', 'FIM', 'FIA', 'PREV', 'REF', 'LP', 'CP', 'IE', 'DI'
+  ];
+
+  // Cria uma expressão regular para encontrar todas as ocorrências dos termos (case-insensitive).
+  // O `\b` garante que estamos removendo palavras inteiras.
+  var regex = new RegExp('\\b(' + termsToRemove.join('|') + ')\\b', 'gi');
+
+  // Remove os termos e depois limpa espaços extras.
+  return fullName.replace(regex, '').replace(/\s\s+/g, ' ').trim();
+}
+
+/**
+ * Gera um nome curto para um fundo removendo termos comuns.
+ * @param {string} fullName O nome completo do fundo.
+ * @returns {string} O nome curto gerado.
+ */
+
 function processLoadedData(json) {
   try {
     if (!json.dados || !Array.isArray(json.dados)) {
       throw new Error("O JSON não contém um array 'dados' válido.");
     }
-    appState.allData = json.dados;
+    appState.allData = json.dados.map(function(item) {
+      // FIX: Substituído o spread operator ({...item}) por um loop para compatibilidade com ES5.
+      var newItem = {};
+      for (var key in item) {
+        if (Object.prototype.hasOwnProperty.call(item, key)) {
+          newItem[key] = item[key];
+        }
+      }
+      newItem.fullName = item.nome; // Salva o nome original
+      newItem.nome = generateShortName(item.nome); // Usa o nome curto como principal
+      return newItem;
+    });
     appState.currentPage = 1;
     populateRiscoFilter(json.dados);
   } catch (error) {

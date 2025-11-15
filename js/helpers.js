@@ -21,7 +21,8 @@ function normalizeString(str) {
 var isFundoIsento = function(nome) {
   if (!nome) return false;
   var nomeLower = normalizeString(nome);
-  return ISENTO_KEYWORDS.some(function(k) { return nomeLower.includes(k); });
+  // A função agora recebe o nome curto
+  return ISENTO_KEYWORDS.some(function(k) { return nomeLower.indexOf(k) !== -1; });
 };
 
 var parsePercent = function(valueStr) {

@@ -1,13 +1,19 @@
 <!--
- * v3.25.1
- * 15/11/2025 04:04
+ * v3.32.0
+ * 15/11/2025 21:27
 -->
 <!--
   ** App: Itau Insights: Analisador de Fundos
-  ** Versão: v3.25.1 (Chore: Timestamps)
+  ** Versão: v3.32.0 (Feat: Nomes Curtos)
   ** Data: 15/11/2025
   
   ** CHANGELOG RECENTE:
+  ** v3.32.0 (15/11/2025)
+  * **FEAT (Core/JS):** Implementada uma função para gerar nomes de fundos mais curtos e legíveis, removendo termos genéricos como "Fundo de Investimento", "Multimercado", etc. O nome original (`fullName`) é preservado.
+  * **FEAT (UI/JS):** Adicionada uma nova opção "Exibir nomes completos dos fundos" no painel de "Filtros Avançados", permitindo ao usuário alternar entre a visualização de nomes curtos e completos.
+  * **FEAT (UX/JS):** A busca por nome agora sempre utiliza o nome completo do fundo para garantir resultados precisos, independentemente da visualização. O nome completo também é exibido como tooltip.
+  * **REFAT (Export/JS):** A funcionalidade de exportação para CSV foi ajustada para sempre utilizar o nome completo dos fundos, garantindo que o arquivo exportado contenha a informação mais detalhada.
+
   ** v3.25.1 (15/11/2025)
   * **CHORE (Docs):** Adicionado comentário de rastreamento (versão e data/hora) no topo dos arquivos modificados.
   * **CHORE (Docs):** Atualizado o changelog e a versão do app.
@@ -361,6 +367,23 @@
                     <p class="text-xs text-gray-500 pl-1 pt-1">
                       Filtra por fundos com "Infra", "Debêntures", etc. no nome. O ajuste de IR será desativado.
                     </p>
+                  </div>
+                </div>
+
+                <!-- FEAT: Nova Coluna para Opções de Visualização -->
+                <div class="space-y-6 md:col-span-2">
+                  <div class="flex items-center gap-3">
+                    <!-- Icon: Eye -->
+                    <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <label class="text-base font-semibold text-gray-700">
+                      Opções de Visualização
+                    </label>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="showFullNameToggle" class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="showFullNameToggle" class="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 transition">
+                      <span class="text-sm font-medium text-gray-700">Exibir nomes completos dos fundos</span>
+                    </label>
                   </div>
                 </div>
 

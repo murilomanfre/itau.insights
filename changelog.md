@@ -1,5 +1,13 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.32.0 (15/11/2025)
+
+*   **FEAT (Core/JS):** Implementada uma função para gerar nomes de fundos mais curtos e legíveis, removendo termos genéricos como "Fundo de Investimento", "Multimercado", etc. O nome original (`fullName`) é preservado.
+*   **FEAT (UI/JS):** Adicionada uma nova opção "Exibir nomes completos dos fundos" no painel de "Filtros Avançados", permitindo ao usuário alternar entre a visualização de nomes curtos e completos.
+*   **FEAT (UX/JS):** A busca por nome agora sempre utiliza o nome completo do fundo para garantir resultados precisos, independentemente da visualização. O nome completo também é exibido como tooltip.
+*   **REFAT (Export/JS):** A funcionalidade de exportação para CSV foi ajustada para sempre utilizar o nome completo dos fundos, garantindo que o arquivo exportado contenha a informação mais detalhada.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.31.0 (15/11/2025)
 
 *   **FEAT (UI):** Adicionado um sumário de contagem de fundos diretamente no cabeçalho da tabela (ex: "Resultados da Análise (431 fundos)").
