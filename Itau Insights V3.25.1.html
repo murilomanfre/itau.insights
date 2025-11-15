@@ -1,0 +1,605 @@
+<!--
+ * v3.25.1
+ * 15/11/2025 04:04
+-->
+<!--
+  ** App: Itau Insights: Analisador de Fundos
+  ** Versão: v3.25.1 (Chore: Timestamps)
+  ** Data: 15/11/2025
+  
+  ** CHANGELOG RECENTE:
+  ** v3.25.1 (15/11/2025)
+  * **CHORE (Docs):** Adicionado comentário de rastreamento (versão e data/hora) no topo dos arquivos modificados.
+  * **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
+  ** v3.25.0 (15/11/2025)
+  * **OPT (CSS/JS):** Implementada a otimização `OPT-STYLE-HARDCODED-TAG-INFRA`.
+  * **REFAT (CSS):** O estilo da tag "Infra" foi movido do JavaScript para uma classe dedicada `.infra-tag` no arquivo `styles.css`.
+  * **REFAT (JS):** A função `buildNomeComTag` foi atualizada para usar a nova classe CSS.
+
+  ** v3.23.0 (15/11/2025)
+  * **FIX (API/JS):** Corrigido o bug `BUG-VALIDADOR-CNPJ`. A busca por CNPJ agora normaliza a entrada do usuário, removendo caracteres não numéricos (`.`, `/`, `-`). Isso torna a busca mais flexível e robusta.
+  * **REFAT (JS):** A lógica de busca por CNPJ em `runDataPipeline` foi atualizada para usar a nova entrada normalizada.
+  * **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
+  ** v3.22.0 (15/11/2025)
+  * **FEAT (UI/JS):** Adicionado novo filtro "Apenas Fundos de Infraestrutura" no painel de filtros avançados.
+  * **FEAT (Core/JS):** Implementada a lógica de filtragem em `runDataPipeline` para exibir apenas fundos que contenham palavras-chave como "infra", "debenture", etc.
+  * **FEAT (UX/JS):** Ao ativar o filtro de infraestrutura, o filtro de "Ajuste de Rentabilidade (IR)" é automaticamente desabilitado e travado na opção "Bruta", melhorando a experiência do usuário.
+  * **FEAT (UI/JS):** Adicionada a tag de filtro ativo "Apenas Fundos de Infra" quando o filtro está em uso.
+  * **CHORE (Docs):** Atualizado o changelog com as novas funcionalidades.
+
+  ** v3.21.0 (15/11/2025)
+  * **FEAT (Core/JS):** A aplicação agora carrega os dados padrão de uma URL do GitHub que contém o JSON codificado em Base64.
+  * **REFAT (JS/API):** A função `handleLoadFromGithub` foi atualizada para buscar o conteúdo como texto, decodificar a string Base64 (`atob`) e então processar o JSON resultante.
+  * **CHORE (Docs):** Atualizado o changelog para refletir as novas funcionalidades.
+
+  ** v3.20.0 (15/11/2025)
+  * **FEAT (UI/HTML):** Adicionado um novo botão "Carregar Base64" para importar dados de um arquivo local (`.txt`, `.b64`, etc.) que contém uma string Base64.
+  * **FEAT (JS/HTML):** Implementada a lógica de leitura de arquivo, decodificação de Base64 e carregamento dos dados via `processLoadedData` em um script isolado no HTML, sem alterar os módulos principais.
+  * **CHORE (HTML):** Adicionado um novo `<input type="file">` oculto (`#base64FileInput`) para suportar a nova funcionalidade.
+
+  ** v3.19.0 (15/11/2025)
+  * **REFAT (Core/JS):** Realizada uma grande refatoração arquitetural no código JavaScript.
+  * **CHORE (JS):** O arquivo monolítico `scripts.js` foi dividido em 7 módulos especializados (`constants.js`, `state.js`, `helpers.js`, `api.js`, `ui.js`, `events.js`, `app.js`) e movidos para um novo diretório `js/`.
+  * **CHORE (HTML):** O arquivo HTML principal foi atualizado para carregar os novos módulos na ordem correta de dependência.
+  * **BENEFÍCIO:** Essa modularização melhora drasticamente a organização, manutenibilidade, legibilidade e escalabilidade do código, seguindo o Princípio da Responsabilidade Única.
+
+  ** v3.17.9 (14/11/2025)
+  * **FIX (JS):** Conversão real para ES5. Substituídas todas as ocorrências de `const`, `let`, `...` (spread/rest) e arrow functions (`=>`) por `var` e `function() {}`.
+  * **FIX (JS):** Isso corrige o `SyntaxError: Unexpected token '...'` que impedia o script de rodar.
+
+  ** v3.17.8 (14/11/2025)
+  * **FIX (JS):** Corrigido `SyntaxError: Unexpected token '...'`. (Falha na implementação)
+  * **REFAT (JS):** Substituída toda a sintaxe ES6 (spread/rest `...` e `Object.assign`) por código ES5 compatível (loops `for`, `arguments`, `concat`). (Falha na implementação)
+
+  ** v3.17.7 (14/11/2025)
+  * **FIX (JS):** Corrigido o bug na ordenação "Crescente" (Menor > Maior) onde valores "N/A" iam para o topo.
+  * **REFAT (JS):** A lógica de `data.sort` agora garante que valores nulos (N/A) sejam sempre enviados para o final da lista, independentemente da direção (asc/desc).
+  * **REFAT (JS):** `getSortValue` para rentabilidade agora retorna `null` em vez de `Infinity` para ser tratado pela nova lógica de sort.
+  
+  ** v3.17.6 (14/11/2025)
+  * **FEAT (UI/UX):** Alterados os textos (labels) do dropdown "Ordenar por:" (mobile) para serem mais claros e intuitivos (ex: "Maior > Menor" virou "Decrescente").
+
+  ** v3.17.5 (14/11/2025)
+  * **FIX (JS):** Corrigido o bug na `parsePercent` que causava a ordenação incorreta de rentabilidades (ex: "Maior > Menor").
+  * **FIX (JS):** A função agora remove corretamente os separadores de milhar (ex: "1.234,56%") antes de converter para número, garantindo que valores altos sejam ordenados corretamente.
+
+  ** v3.17.4 (11/11/2025)
+  * **FIX (HTML):** Corrigido o erro fatal `TypeError: ui.tableBody is null`.
+  * **FIX (HTML):** O HTML dentro do `#desktopTableContainer` estava malformado (faltavam as tags `<table>`, `<thead>` e o início do `<tr>`). Isso impedia o JavaScript de encontrar o elemento `#tableBody` no DOM. O bloco da tabela foi restaurado.
+
+  ** v3.17.3 (11/11/2025)
+  * **FIX (JS):** Corrigido outro `SyntaxError: expected expression, got '<'` na função `renderPagination`. O loop `forEach` que gera os números da página estava corrompido.
+
+  ** v3.17.2 (11/11/2025)
+  * **FIX (JS):** Corrigido um `SyntaxError: expected expression, got '<'` (bloco de HTML dentro de JS).
+  * **FIX (JS):** Restaurada a função `renderMobileCard` que estava corrompida.
+  * **FIX (JS):** Movidas as funções helper para o escopo global.
+
+  ** v3.17.1 (11/11/2025)
+  * **FIX (JS):** Corrigido um `SyntaxError: missing ) after argument list` (vários erros de sintaxe).
+
+  ** v3.17.0 (11/11/2025)
+  * **FEAT (UI/UX):** Adicionado um menu dropdown "Ordenar por:" (visível apenas em mobile).
+  * **FEAT (JS):** Implementada a lógica `handleMobileSortChange`.
+  * **CHORE (JS):** Sincronizado o `handleSortClick` (desktop) e `handleMobileSortChange` (mobile).
+  * **FIX (JS):** Corrigida a lógica `getSortValue` para 'risco' (ordenar por Baixo=1, Medio=2, Alto=3).
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- v3.1.0: Título atualizado -->
+    <title>Itau Insights: Analisador de Fundos</title>
+    <!-- v3.12.1: Favicon Adicionado -->
+    <link rel="icon" type="image/x-icon" href="https://www.itau.com.br/media/dam/m/39c1bb1de2d2168/original/favicon.ico" />
+    <!-- Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Link para o novo arquivo de estilos -->
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="p-4 sm:p-6 lg:p-8">
+  
+    <!-- Modal (Alerta) -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 hidden">
+      <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm">
+        <h3 id="modalTitle" class="text-xl font-semibold text-gray-900 mb-3"></h3>
+        <p id="modalMessage" class="text-sm text-gray-700 mb-5"></p>
+        <div class="flex justify-end">
+          <button
+            id="modalCloseBtn"
+            class="px-5 py-2 brand-bg text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-150"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Input de Arquivo (Invisível, mas acessível via 'label') -->
+    <input
+      type="file"
+      id="fileInput"
+      accept=".json"
+      class="hidden" 
+    />
+
+    <!-- v3.20.0: Input de Arquivo para Base64 (Invisível) -->
+    <input
+      type="file"
+      id="base64FileInput"
+      class="hidden"
+    />
+  
+    <!-- Container Principal -->
+    <div id="appContainer" class="max-w-7xl mx-auto">
+      
+      <!-- v3.12.0: Estado Vazio (Agora é uma tela de Falha) -->
+      <div id="emptyState" class="text-center hidden animate-fadeIn"> <!-- v3.12.0: Começa escondido -->
+        <header class="mb-8">
+          <div class="flex justify-center items-center gap-3 mb-3">
+            <!-- v3.2.0: Ícone Itaú SVG -->
+            <svg class="w-8 h-8 brand-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.5147 28.4853C14.8118 31.7824 19.9575 33.75 25.5 33.75C31.0425 33.75 36.1882 31.7824 39.4853 28.4853C36.1882 25.1882 31.0425 23.2176 25.5 23.2176C19.9575 23.2176 14.8118 25.1882 11.5147 28.4853Z" fill="white" stroke="currentColor" stroke-width="3"/>
+              <path d="M0 40H40V0H0V40ZM3.75 3.75H36.25V36.25H3.75V3.75Z" fill="currentColor"/>
+            </svg>
+            <!-- v3.1.0: Título atualizado -->
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold brand-header">
+              Itau Insights: Analisador de Fundos
+            </h1>
+          </div>
+          <!-- v3.12.0: Descrição de Falha -->
+          <p id="emptyStateMessage" class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+            Não foi possível carregar os dados do GitHub. Tente novamente ou carregue um arquivo local.
+          </p>
+        </header>
+        
+        <!-- v3.12.0: Nova UI do Estado Vazio (Falha) -->
+        <div class="max-w-xs mx-auto space-y-4">
+          <button
+            id="retryGithubBtn" <!-- v3.12.0: ID alterado -->
+            class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 brand-bg text-white text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl cursor-pointer transition-all transform hover:-translate-y-0.5"
+          >
+            <!-- Icon: Database -->
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            Tentar Novamente
+          </button>
+          
+          <label 
+            for="fileInput" 
+            class="text-sm font-medium brand-text brand-text-hover cursor-pointer"
+          >
+            Ou, carregar um arquivo local
+          </label>
+        </div>
+        
+      </div>
+      
+      <!-- Estado do Dashboard (Depois de carregar o arquivo) -->
+      <div id="dashboardState" class=""> <!-- v3.12.0: Não está mais escondido por padrão -->
+        <header class="mb-5 sm:mb-7">
+          <div class="flex items-center gap-3 mb-2">
+            <!-- v3.2.0: Ícone Itaú SVG -->
+            <svg class="w-7 h-7 brand-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.5147 28.4853C14.8118 31.7824 19.9575 33.75 25.5 33.75C31.0425 33.75 36.1882 31.7824 39.4853 28.4853C36.1882 25.1882 31.0425 23.2176 25.5 23.2176C19.9575 23.2176 14.8118 25.1882 11.5147 28.4853Z" fill="white" stroke="currentColor" stroke-width="3"/>
+              <path d="M0 40H40V0H0V40ZM3.75 3.75H36.25V36.25H3.75V3.75Z" fill="currentColor"/>
+            </svg>
+            <!-- v3.1.0: Título atualizado -->
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold brand-header">
+              Itau Insights: Analisador de Fundos
+            </h1>
+          </div>
+          <!-- v3.1.0: Descrição atualizada -->
+          <p class="text-sm sm:text-base text-gray-600">
+            Visualize e filtre dados dos fundos de investimento Itaú. Carregue um arquivo JSON para começar a análise.
+          </p>
+        </header>
+        
+        <main class="w-full">
+          <!-- v3.3.0: Barra de Busca Unificada -->
+          <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label for="filterGlobal" class="sr-only">
+                  Buscar por Nome ou CNPJ
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <!-- Icon: Search -->
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="filterGlobal"
+                    name="global"
+                    placeholder="Buscar por Nome do Fundo ou CNPJ..."
+                    class="w-full pl-10 pr-4 py-2 text-sm border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 brand-border-focus transition duration-150"
+                  />
+                </div>
+                <!-- v3.3.0: Mensagem de Feedback da Busca -->
+                <div id="filterMessage" class="text-sm mt-2"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- v3.13.0: Painel de Filtros Avançados (Accordion) -->
+          <div id="advancedFilterPanel" class="bg-white rounded-xl shadow-lg border border-gray-200 mb-8 animate-fadeIn">
+            <!-- Cabeçalho Clicável -->
+            <div id="advancedPanelHeader" class="flex justify-between items-center p-5 cursor-pointer">
+              <div class="flex items-center gap-3">
+                <!-- v3.9.0: Ícone mudado de Filter para SlidersHorizontal -->
+                <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                <!-- v3.13.0: Título alterado -->
+                <h3 class="text-xl font-bold text-gray-800">Filtros Avançados</h3>
+              </div>
+              <div class="flex items-center gap-4">
+                <!-- v3.13.0: ID, texto e title alterados -->
+                <button
+                  id="clearAdvancedFiltersBtn"
+                  class="text-sm font-medium brand-text-hover brand-text hidden"
+                  title="Limpar filtros avançados (Risco, Performance e IR)"
+                >
+                  Limpar Filtros
+                </button>
+                <!-- Icon: ChevronDown (será trocado por JS) -->
+                <svg id="advancedPanelChevron" class="w-6 h-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+
+            <!-- Sumário de Filtros (Quando Fechado) -->
+            <!-- v3.7.3: Removido 'border-t border-gray-200' para corrigir o bug do "vazamento" visual -->
+            <div id="filterTagsContainer" class="px-5 pb-5 hidden">
+              <div class="flex flex-wrap gap-2 pt-4">
+                <!-- Tags serão injetadas aqui pelo JS -->
+              </div>
+            </div>
+            
+            <!-- Painel Aberto -->
+            <!-- v3.13.0: ID alterado -->
+            <div id="advancedPanelContent" class="p-5 border-t border-gray-200 hidden">
+              <!-- v3.13.0: Layout alterado para 3 colunas -->
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-x-8 gap-y-6">
+                
+                <!-- v3.13.0: Coluna 1: Risco (MOVIDO PARA CÁ) -->
+                <div class="space-y-6">
+                  <div class="flex items-center gap-3">
+                    <!-- v3.13.0: Ícone de Risco (ShieldCheck) -->
+                    <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <label class="text-base font-semibold text-gray-700">
+                      Nível de Risco
+                    </label>
+                  </div>
+                  <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">A. Selecione o Risco:</label>
+                    <!-- v3.15.0: Revertido para 'segmented-control' para consistência -->
+                    <div id="riscoButtonsContainer" class="segmented-control" role="group" aria-label="Filtro de Nível de Risco">
+                      <!-- Botões de Risco (JS) -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Coluna 2: Análise de Performance -->
+                <div class="space-y-6">
+                  <div class="flex items-center gap-3">
+                    <!-- v3.2.0: Ícone com cor -->
+                    <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    <label class="text-base font-semibold text-gray-700">
+                      Análise de Performance
+                    </label>
+                  </div>
+                  
+                  <!-- v3.4.0: Bloco "Período na Coluna" (Segmented Control) -->
+                  <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">A. Período na Coluna:</label>
+                    <!-- v3.10.0: Adicionado role e aria-label -->
+                    <div id="displayPeriodButtons" class="segmented-control" role="group" aria-label="Período na Coluna">
+                      <!-- Botões de Período (JS) -->
+                    </div>
+                  </div>
+                  
+                  <!-- v3.4.0: Bloco "Filtrar Performance" (Toggle + Segmented Control) -->
+                  <div class="space-y-3">
+                    <label class="block text-sm font-medium text-gray-700">B. Filtrar Performance:</label>
+                    <!-- Toggle Switch -->
+                    <div class="flex items-center gap-3 mb-2">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="perfFilterToggle" value="" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-orange-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                      </label>
+                      <span id="perfFilterLabel" class="text-sm text-gray-700">Filtro Desativado</span>
+                    </div>
+                    
+                    <!-- v3.7.2: Container de Benchmark restaurado -->
+                    <div id="perfBenchmarkContainer" class="hidden animate-fadeIn">
+                      <!-- v3.10.0: Adicionado role e aria-label -->
+                      <div id="perfBenchmarkButtons" class="segmented-control" role="group" aria-label="Filtro de Performance Benchmark">
+                        <!-- Botões de Benchmark (JS) -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Coluna 2 (antiga 3): Ajuste de IR -->
+                <div class="space-y-6">
+                  <div class="flex items-center gap-3">
+                    <!-- v3.2.0: Ícone com cor -->
+                    <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                    <label class="text-base font-semibold text-gray-700">
+                      Ajuste de Rentabilidade (IR)
+                    </label>
+                  </div>
+
+                  <!-- v3.5.0: Bloco "Alíquota de IR" (Segmented Control) -->
+                  <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">A. Alíquota de IR (Prazo):</label>
+                    <!-- v3.14.0: Revertido para 'segmented-control' para consistência -->
+                    <div id="taxBracketButtons" class="segmented-control" role="group" aria-label="Alíquota de IR">
+                      <!-- Botões de Alíquota (JS) -->
+                    </div>
+                    <p class="text-xs text-gray-500 pl-1 pt-1">
+                      Selecione 'Bruta' para ignorar o IR, ou a alíquota desejada (ex: 15% para > 720 dias).
+                    </p>
+                  </div>
+                </div>
+
+                <!-- v3.22.0: Coluna 4: Filtro de Tipo de Fundo (Infraestrutura) -->
+                <div class="space-y-6">
+                  <div class="flex items-center gap-3">
+                    <!-- Icon: Building -->
+                    <svg class="w-6 h-6 brand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M7 7h3v3H7z"/><path d="M7 14h3v3H7z"/><path d="M14 7h3v3h-3z"/><path d="M14 14h3v3h-3z"/></svg>
+                    <label class="text-base font-semibold text-gray-700">
+                      Tipo de Fundo
+                    </label>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="infraFilterToggle" class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="infraFilterToggle" class="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 transition">
+                      <span class="text-sm font-medium text-gray-700">Apenas Fundos de Infraestrutura</span>
+                    </label>
+                    <p class="text-xs text-gray-500 pl-1 pt-1">
+                      Filtra por fundos com "Infra", "Debêntures", etc. no nome. O ajuste de IR será desativado.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Cabeçalho da Tabela -->
+          <div class="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-5">
+            <h3 class="text-xl lg:text-2xl font-bold text-gray-800 mb-3 md:mb-0">
+              Resultados da Análise
+            </h3>
+            <!-- v3.10.0: Grupo de botões de ação -->
+            <div class="flex flex-wrap items-center justify-center md:justify-end gap-2">
+              <!-- v3.11.0: Novo Botão de Recarregar do GitHub -->
+              <button
+                id="reloadGithubBtn"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white rounded-lg hover:bg-gray-100 transition-colors cursor-pointer shadow-sm border border-gray-300"
+                title="Recarregar os dados mais recentes do GitHub"
+              >
+                <!-- Icon: Database -->
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                Recarregar GitHub
+              </button>
+              
+              <!-- v3.10.0: Novo Botão de Limpar Tudo -->
+              <button
+                id="clearAllAppBtn"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-700 bg-white rounded-lg hover:bg-gray-100 transition-colors cursor-pointer shadow-sm border border-gray-300"
+                title="Limpar todos os filtros, incluindo busca e risco"
+              >
+                <!-- Icon: RotateCcw -->
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Limpar Tudo
+              </button>
+              <label 
+                for="fileInput" 
+                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold brand-text bg-white rounded-lg hover:bg-orange-50 transition-colors cursor-pointer shadow-sm border border-orange-200"
+              >
+                <!-- Icon: FileUp -->
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Trocar Arquivo Local
+              </label>
+              <!-- v3.20.0: Botão alterado para carregar arquivo Base64 -->
+              <label 
+                for="base64FileInput"
+                id="loadBase64Btn"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer shadow-sm border border-blue-700"
+                title="Carregar dados a partir de uma string Base64"
+              >
+                <!-- Icon: Terminal -->
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                Carregar Base64
+              </label>
+            </div>
+          </div>
+          
+          <!-- v3.17.0: Controles de Ordenação Mobile -->
+          <div id="mobileSortControls" class="md:hidden mb-4">
+            <label for="mobileSortSelect" class="block text-sm font-medium text-gray-700 mb-1">
+              Ordenar por:
+            </label>
+            <select
+              id="mobileSortSelect"
+              class="w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 brand-border-focus bg-white transition duration-150"
+            >
+              <!-- Opções injetadas pelo JS -->
+            </select>
+          </div>
+          
+          <!-- v3.16.0: Tabela de Dados foi separada em dois containers (Desktop e Mobile) -->
+          <div class="mb-4 sm:mb-6">
+            
+            <!-- v3.17.4: HTML da Tabela Restaurado para corrigir o bug 'tableBody is null' -->
+            <!-- Container Desktop (Tabela) -->
+            <div id="desktopTableContainer" class="overflow-x-auto w-full rounded-lg border border-gray-200 shadow-sm bg-white">
+              <div class="min-w-full">
+                <!-- v3.2.0: Cabeçalho com classe customizada -->
+                <table class="w-full divide-y divide-gray-200 text-sm">
+                  <thead class="table-header">
+                    <tr>
+                      <th
+                        scope="col"
+                        class="px-3 sm:px-4 py-3 text-left w-2/5 cursor-pointer sortable group select-none"
+                        data-column="nome"
+                      >
+                        <span class="flex items-center">Nome</span>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 sm:px-4 py-3 text-left cursor-pointer sortable group select-none"
+                        data-column="rentabilidade_dinamica"
+                      >
+                        <span class="flex items-center">Rentabilidade</span>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 sm:px-4 py-3 text-left cursor-pointer sortable group select-none"
+                        data-column="resgate"
+                      >
+                        <span class="flex items-center">Resgate</span>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 sm:px-4 py-3 text-left cursor-pointer sortable group select-none"
+                        data-column="risco"
+                      >
+                        <span class="flex items-center">Risco</span>
+                      </th>
+                      <th
+                        scope="col"
+                        class="px-3 sm:px-4 py-3 text-left w-[50px]"
+                        data-column="action"
+                      >
+                        Ação
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Linhas (Desktop) serão injetadas pelo JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- v3.16.0: Container Mobile (Cards) -->
+            <div id="mobileCardContainer" class="space-y-4">
+              <!-- Cards (Mobile) serão injetados pelo JS -->
+            </div>
+            
+          </div>
+          
+          <!-- Mensagem de "Nenhum Resultado" (para filtros) -->
+          <div id="noResultsMessage" class="hidden text-center text-gray-500 py-4 text-sm">
+            Nenhum fundo encontrado com os filtros aplicados.
+          </div>
+          
+          <!-- Paginação -->
+          <nav id="paginationControls" class="hidden" aria-label="Pagination">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 py-3">
+              <!-- Sumário -->
+              <div class="order-2 sm:order-1">
+                <span id="paginationSummary" class="text-sm text-gray-700 whitespace-nowrap"></span>
+              </div>
+              <!-- Controles -->
+              <div class="order-1 sm:order-2 flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                  <label for="itemsPerPage" class="text-sm text-gray-700 whitespace-nowrap">
+                    Itens:
+                  </label>
+                  <select
+                    id="itemsPerPage"
+                    class="w-16 sm:w-20 px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 brand-border-focus bg-white transition duration-150"
+                  >
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                  </select>
+                </div>
+                <div class="flex items-center gap-1">
+                  <button
+                    id="prevPageBtn"
+                    class="relative inline-flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition duration-150"
+                  >
+                    Anterior
+                  </button>
+                  <div id="pageNumbersContainer" class="hidden sm:flex items-center gap-1">
+                    <!-- Números das páginas -->
+                  </div>
+                  <button
+                    id="nextPageBtn"
+                    class="relative inline-flex items-center px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition duration-150"
+                  >
+                    Próxima
+                  </button>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts Modulares -->
+    <script src="js/constants.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- SCRIPT ISOLADO PARA O BOTÃO DE CARREGAR BASE64 -->
+    <script>
+      // Espera o DOM estar completamente carregado para garantir que todos os elementos e scripts da app estejam disponíveis.
+      document.addEventListener('DOMContentLoaded', function () {
+        var base64FileInput = document.getElementById('base64FileInput');
+
+        // Garante que o input e a função 'processLoadedData' (de api.js) existam.
+        if (base64FileInput && typeof window.processLoadedData === 'function') {
+          base64FileInput.addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            if (!file) {
+              return; // Sai se nenhum arquivo for selecionado
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+              try {
+                var base64String = e.target.result;
+                if (!base64String || base64String.trim() === '') {
+                  throw new Error("O arquivo selecionado está vazio.");
+                }
+
+                // 1. Decodifica a string Base64 para uma string normal (UTF-8).
+                var jsonString = atob(base64String);
+
+                // 2. Faz o parse da string JSON para um objeto JavaScript.
+                var parsedData = JSON.parse(jsonString);
+
+                // 3. A função 'processLoadedData' espera um objeto com a chave 'dados'.
+                var dataToLoad = Array.isArray(parsedData) ? { dados: parsedData } : parsedData;
+
+                // 4. Utiliza a função principal da aplicação para carregar os dados.
+                window.processLoadedData(dataToLoad);
+
+              } catch (error) {
+                alert("Erro ao processar o arquivo Base64:\n\n" + error.message + "\n\nVerifique se o arquivo contém uma string Base64 válida que decodifica para um JSON correto.");
+              } finally {
+                // Limpa o valor do input para permitir carregar o mesmo arquivo novamente.
+                event.target.value = '';
+              }
+            };
+
+            reader.readAsText(file);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
