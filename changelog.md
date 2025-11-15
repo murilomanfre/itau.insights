@@ -1,10 +1,18 @@
 <!--
- * v3.25.1
+ * v3.26.0
  * 15/11/2025 04:04
 -->
 # **Itau Insights: Histórico de Versões**
 
+## v3.26.0 (15/11/2025)
+
+*   **FIX (Security/JS):** Corrigido o bug `BUG_DataSanitizationToPreventXSS`.
+*   **REFAT (JS):** Adicionada sanitização de dados na entrada do pipeline (`runDataPipeline`) para prevenir vulnerabilidades de Cross-Site Scripting (XSS). A função agora limpa todas as propriedades dos itens de dados antes do processamento, garantindo que nenhum script malicioso seja renderizado na UI.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.25.1 (15/11/2025)
+*   **FEAT (UI/JS):** Implementada a funcionalidade `FEAT_DataExport_CSV`.
+*   **FEAT (UI):** Adicionado um botão "Exportar para CSV" no cabeçalho do dashboard, permitindo que o usuário baixe a visualização de dados atual (já filtrada e ordenada) como um arquivo `.csv`.
 *   **CHORE (Docs):** Adicionado comentário de rastreamento (versão e data/hora) no topo dos arquivos modificados, conforme solicitado.
 *   **CHORE (Docs):** Atualizado o changelog e a versão do app.
 
