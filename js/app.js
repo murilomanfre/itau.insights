@@ -184,6 +184,7 @@ function runDataPipeline() {
   appState.processedData = data;
 
   // 4. RENDERIZAR
+  renderSummaries(); // Atualiza as contagens de resultados no cabeçalho e na paginação.
   renderTable();
   renderPagination();
 }

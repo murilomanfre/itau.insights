@@ -1,10 +1,12 @@
-<!--
- * v3.26.0
- * 15/11/2025 04:04
- * v3.27.0
- * 2025-11-15 18:17 (Local)
--->
 # **Itau Insights: Histórico de Versões**
+
+## v3.31.0 (15/11/2025)
+
+*   **FEAT (UI):** Adicionado um sumário de contagem de fundos diretamente no cabeçalho da tabela (ex: "Resultados da Análise (431 fundos)").
+*   **FIX (Core/JS):** Corrigido o bug em que a nova contagem de fundos no cabeçalho não era atualizada ao aplicar filtros.
+*   **REFAT (UI/JS):** Criada a nova função `renderSummaries()` para centralizar a lógica de atualização de todas as contagens de resultados (cabeçalho e paginação), garantindo consistência. A função `runDataPipeline` agora chama `renderSummaries()` diretamente.
+*   **CHORE (UI):** Removido o sumário de paginação redundante ("Mostrando X-Y de Z") do rodapé para simplificar a interface, uma vez que a contagem principal foi movida para o cabeçalho.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
 
 ## v3.30.0 (15/11/2025)
 

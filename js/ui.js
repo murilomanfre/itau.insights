@@ -522,6 +522,33 @@ function renderDetailPanel(item) {
   );
 }
 
+/**
+ * Renderiza os sumários de contagem de itens no cabeçalho e na paginação.
+ * É chamada diretamente pelo pipeline de dados para garantir que a contagem
+ * esteja sempre atualizada, mesmo quando não há resultados.
+ */
+function renderSummaries() {
+  var totalItems = appState.processedData.length;
+  var filtersActive = totalItems !== appState.allData.length;
+
+  // Atualiza o sumário no cabeçalho da tabela (ex: "(123 de 456)" ou "(456 fundos)")
+  if (ui.headerSummary) {
+    ui.headerSummary.textContent = filtersActive ?
+      ('(' + totalItems + ' de ' + appState.allData.length + ')') :
+      ('(' + totalItems + ' fundos)');
+  }
+
+  // Atualiza o sumário na área de paginação (ex: "Mostrando 1-100 de 123")
+  if (ui.paginationSummary) {
+    var startItem = totalItems > 0 ? (appState.currentPage - 1) * appState.itemsPerPage + 1 : 0;
+    var endItem = Math.min(startItem + appState.itemsPerPage - 1, totalItems);
+    var baseSummary = appState.isMobile ?
+      (startItem + '-' + endItem + ' / ' + totalItems) :
+      ('Mostrando ' + startItem + '-' + endItem + ' de ' + totalItems);
+    ui.paginationSummary.textContent = baseSummary;
+  }
+}
+
 // v3.22.0: Nova função para gerenciar a UI do filtro de IR
 function updateTaxFilterUI(isInfraFilterActive) {
   var taxButtons = document.querySelectorAll('#taxBracketButtons button');
@@ -565,20 +592,7 @@ function renderPagination() {
   // Se há dados, sempre mostra o painel de paginação.
   if (ui.paginationControls) ui.paginationControls.classList.remove('hidden');
 
-  // 1. Renderiza o sumário (sempre visível quando há dados)
-  var startItem = (appState.currentPage - 1) * appState.itemsPerPage + 1;
-  var endItem = Math.min(startItem + appState.itemsPerPage - 1, totalItems);
-  var filtersActive = appState.processedData.length !== appState.allData.length;
-  var baseSummary = appState.isMobile ?
-    (startItem + '-' + endItem + ' / ' + totalItems) :
-    ('Mostrando ' + startItem + '-' + endItem + ' de ' + totalItems);
-
-  if (ui.paginationSummary) {
-    ui.paginationSummary.textContent = filtersActive ?
-      (baseSummary + ' (de ' + appState.allData.length + ' no total)') :
-      baseSummary;
-  }
-
+  // A lógica de sumário foi movida para a função renderSummaries()
   // 2. Controla a visibilidade dos botões de navegação
   if (ui.prevPageBtn) ui.prevPageBtn.disabled = (appState.currentPage === 1);
   if (ui.nextPageBtn) ui.nextPageBtn.disabled = (appState.currentPage === totalPages);

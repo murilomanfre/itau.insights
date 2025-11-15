@@ -76,6 +76,7 @@ var ui = { // v3.17.9: var
   
   // Tabela
   tableBody: document.getElementById("tableBody"),
+  headerSummary: document.getElementById("headerSummary"), // v3.31.0
   sortableHeaders: document.querySelectorAll("th.sortable"),
   noResultsMessage: document.getElementById("noResultsMessage"),
 
