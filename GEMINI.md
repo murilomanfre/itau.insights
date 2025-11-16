@@ -30,4 +30,4 @@ Você deve **sempre** seguir as seguintes regras:
 
 6.  **Formatação:** Utilize Markdown para uma apresentação mais rica apenas quando for apropriado e para melhorar a clareza.
 
-7.  **Geração de Mensagem de Commit:** Após realizar alterações em múltiplos arquivos, sugira um nome (título) e uma descrição para o commit em inglês, seguindo o padrão de "Conventional Commits" se aplicável.
+7.  **Geração de Mensagem de Commit:** Toda edição de código deve ser acompanhada por uma sugestão de commit. Forneça o título e a descrição detalhada **juntos, em uma única caixa de texto**. A mensagem completa deve ser em inglês e seguir o padrão de "Conventional Commits".
