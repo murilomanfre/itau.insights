@@ -1,5 +1,13 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.34.0 (16/11/2025)
+
+*   **FEAT (UI/JS):** Expandidas as opções do filtro de performance para incluir "110% CDI" e "115% CDI", oferecendo mais granularidade na análise.
+*   **FEAT (UI/HTML):** Adicionado um campo de entrada de texto (`<input type="number">`) que permite ao usuário definir um valor percentual customizado para o filtro de performance (ex: "108%").
+*   **FEAT (Core/JS):** Implementada a lógica no `appState` e nos `event handlers` para capturar o valor customizado, que sobrepõe os botões pré-definidos e aplica o filtro dinamicamente.
+*   **REFAT (JS):** A constante `CDI_TIERS` foi movida para `ui.js` para consolidar a lógica de UI e facilitar futuras modificações.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.33.0 (16/11/2025)
 
 *   **FIX (Core/JS):** Corrigida a função de limpeza de nomes de fundos (`generateShortName`) que não removia a sigla "RF" (Renda Fixa). A adição do termo à lista de remoção garante maior consistência e limpeza nos nomes curtos gerados para fundos de renda fixa.

@@ -19,6 +19,7 @@ function setupEventListeners() {
   window.addEventListener("resize", debounce(handleResize, 250));
   if (ui.infraFilterToggle) ui.infraFilterToggle.addEventListener('change', handleInfraFilterChange); // v3.22.0
   ui.modalCloseBtn.addEventListener("click", hideModal);
+  if (ui.perfBenchmarkCustom) ui.perfBenchmarkCustom.addEventListener('change', handlePerfBenchmarkCustomChange); // v3.34.0
   if (ui.showFullNameToggle) ui.showFullNameToggle.addEventListener('change', handleShowFullNameToggle); // FEAT: Listener para o novo toggle
 }
 
@@ -145,6 +146,24 @@ function handlePerfBenchmarkClick(e) {
   renderActiveFilterTags();
 }
 
+// v3.34.0: Handler para o input de benchmark customizado
+function handlePerfBenchmarkCustomChange(e) {
+  var value = parseFloat(e.target.value);
+  if (!isNaN(value) && value > 0) {
+    appState.perfBenchmark = value / 100.0; // Converte para decimal (ex: 110 -> 1.1)
+    appState.customPerfBenchmark = value; // Salva o valor original
+
+    // Desativa os botões pré-definidos
+    document.querySelectorAll('.filter-perf-benchmark').forEach(function(btn) {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
+    });
+
+    runDataPipeline();
+    renderActiveFilterTags();
+  }
+}
+
 function handleTaxBracketChange(e) {
   var value = e.currentTarget.dataset.value;
   appState.taxBracket = value;
@@ -198,6 +217,7 @@ function resetAdvancedFilters() {
   updateTaxFilterUI(false);
   buildAdvancedFilters();
   handleIsPerfFilterChange({ target: { checked: false } });
+  if (ui.perfBenchmarkCustom) ui.perfBenchmarkCustom.value = ''; // v3.34.0
   document.querySelectorAll('.filter-risco-btn').forEach(function(btn) {
     var isTodos = btn.dataset.value === 'todos';
     btn.classList.toggle('active', isTodos);

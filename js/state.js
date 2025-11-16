@@ -22,6 +22,7 @@ var appState = { // v3.17.9: var
   displayPeriod: '12_meses',  // '12_meses', 'no_ano', 'no_mes'
   isPerfFilterActive: false, // boolean (toggle)
   perfBenchmark: 1.0,      // 1.0, 1.05, 1.20
+  customPerfBenchmark: null, // v3.34.0: Para o valor customizado
   
   // v3.5.0: Estado de IR simplificado
   taxBracket: 'bruta', // 'bruta', '15.0', '17.5', etc.
@@ -64,6 +65,7 @@ var ui = { // v3.17.9: var
   perfFilterLabel: document.getElementById("perfFilterLabel"),
   perfBenchmarkContainer: document.getElementById("perfBenchmarkContainer"),
   perfBenchmarkButtons: document.getElementById("perfBenchmarkButtons"),
+  perfBenchmarkCustom: document.getElementById("perfBenchmarkCustom"), // v3.34.0
   taxBracketButtons: document.getElementById("taxBracketButtons"),
   infraFilterToggle: document.getElementById("infraFilterToggle"), // v3.22.0
   showFullNameToggle: document.getElementById("showFullNameToggle"), // FEAT: Novo toggle

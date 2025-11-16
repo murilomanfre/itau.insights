@@ -2,6 +2,16 @@
  * v3.25.1
  * 15/11/2025 04:04
  */
+
+// v3.34.0: Movido de constants.js para cá e expandido
+var CDI_TIERS = [
+  { label: '100% CDI', value: 1.0 },
+  { label: '105% CDI', value: 1.05 },
+  { label: '110% CDI', value: 1.10 },
+  { label: '115% CDI', value: 1.15 },
+  { label: '120% CDI', value: 1.20 },
+];
+
 // --- LÓGICA DE CONSTRUÇÃO E RENDERIZAÇÃO DA UI ---
 
 function buildAdvancedFilters() {
@@ -25,7 +35,7 @@ function buildAdvancedFilters() {
       ' class="segmented-btn filter-perf-benchmark ' + (tier.value === appState.perfBenchmark ? 'active' : '') + '"' +
       ' aria-pressed="' + (tier.value === appState.perfBenchmark ? 'true' : 'false') + '"' +
       '>' +
-      '&gt; ' + tier.label +
+      '&gt; ' + tier.label + // ex: > 100% CDI
       '</button>'
     );
   }).join('');
@@ -222,7 +232,10 @@ function renderActiveFilterTags() {
 
   if (appState.isPerfFilterActive) {
     var periodLabel = appState.displayPeriod.replace("_", " ");
-    var label = 'Perf: > ' + (appState.perfBenchmark * 100) + '% CDI (' + periodLabel + ')';
+    // v3.34.0: Usa o valor customizado se existir, senão o padrão
+    var benchmarkPercent = appState.customPerfBenchmark !== null ? appState.customPerfBenchmark : (appState.perfBenchmark * 100);
+    var label = 'Perf: > ' + benchmarkPercent + '% CDI (' + periodLabel + ')';
+
     tags.push({
       key: 'perf',
       label: label,
