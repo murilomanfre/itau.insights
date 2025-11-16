@@ -54,7 +54,8 @@ body {
 
 /* v3.4.0: Componente de Botões de Segmento */
 .segmented-control {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   background-color: #e5e7eb; /* bg-gray-200 */
   border-radius: 0.5rem; /* rounded-lg */
   padding: 4px;

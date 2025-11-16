@@ -1,5 +1,12 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.35.0 (16/11/2025)
+
+*   **FIX (UI/CSS):** Corrigida a quebra de layout do painel de filtros avançados em telas de largura intermediária (ex: tablets), que causava a compressão de texto e componentes.
+*   **REFAT (UI/HTML):** O grid do painel de filtros agora se adapta de forma mais fluida, usando um layout de 2 colunas em telas médias antes de passar para 4 colunas em telas grandes.
+*   **REFAT (UI/CSS):** Os componentes de botões (`segmented-control`) agora permitem a quebra de linha (`flex-wrap`), impedindo que o texto interno seja espremido em viewports menores.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.34.0 (16/11/2025)
 
 *   **FEAT (UI/JS):** Expandidas as opções do filtro de performance para incluir "110% CDI" e "115% CDI", oferecendo mais granularidade na análise.
