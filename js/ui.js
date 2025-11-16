@@ -35,7 +35,7 @@ function buildAdvancedFilters() {
       ' class="segmented-btn filter-perf-benchmark ' + (tier.value === appState.perfBenchmark ? 'active' : '') + '"' +
       ' aria-pressed="' + (tier.value === appState.perfBenchmark ? 'true' : 'false') + '"' +
       '>' +
-      '&gt; ' + tier.label + // ex: > 100% CDI
+      tier.label + // Correção: Apenas o label, sem o símbolo '>'
       '</button>'
     );
   }).join('');
@@ -234,7 +234,7 @@ function renderActiveFilterTags() {
     var periodLabel = appState.displayPeriod.replace("_", " ");
     // v3.34.0: Usa o valor customizado se existir, senão o padrão
     var benchmarkPercent = appState.customPerfBenchmark !== null ? appState.customPerfBenchmark : (appState.perfBenchmark * 100);
-    var label = 'Perf: > ' + benchmarkPercent + '% CDI (' + periodLabel + ')';
+    var label = 'Perf: ' + benchmarkPercent + '% CDI (' + periodLabel + ')'; // Correção: Apenas o label, sem o símbolo '>'
 
     tags.push({
       key: 'perf',

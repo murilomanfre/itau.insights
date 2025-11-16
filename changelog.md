@@ -1,5 +1,10 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.36.0 (16/11/2025)
+ 
+*   **FIX (UI/JS):** Corrigida a remoção do símbolo `>` do filtro de performance, que havia sido implementada incorretamente na refatoração anterior. O símbolo agora foi removido de forma definitiva dos botões e da tag de filtro ativo.
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.35.0 (16/11/2025)
 
 *   **FIX (UI/CSS):** Corrigida a quebra de layout do painel de filtros avançados em telas de largura intermediária (ex: tablets), que causava a compressão de texto e componentes.
