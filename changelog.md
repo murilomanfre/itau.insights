@@ -1,5 +1,11 @@
 # **Itau Insights: Histórico de Versões**
 
+## v3.33.0 (16/11/2025)
+
+*   **FIX (Core/JS):** Corrigida a função de limpeza de nomes de fundos (`generateShortName`) que não removia a sigla "RF" (Renda Fixa). A adição do termo à lista de remoção garante maior consistência e limpeza nos nomes curtos gerados para fundos de renda fixa.
+*   **FIX (Core/JS):** Corrigida a função de limpeza de nomes de fundos (`generateShortName`) que não removia os termos "Infra" e "Infraestrutura", causando redundância visual com a tag "Infra".
+*   **CHORE (Docs):** Atualizado o changelog e a versão do app.
+
 ## v3.32.1 (15/11/2025)
 
 *   **CHORE (Docs):** Adicionada a indicação `(UTC)` aos timestamps nos cabeçalhos dos arquivos para esclarecer que o horário é baseado no Tempo Universal Coordenado e não no fuso horário local.

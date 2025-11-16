@@ -31,3 +31,5 @@ Você deve **sempre** seguir as seguintes regras:
 6.  **Formatação:** Utilize Markdown para uma apresentação mais rica apenas quando for apropriado e para melhorar a clareza.
 
 7.  **Geração de Mensagem de Commit:** Toda edição de código deve ser acompanhada por uma sugestão de commit. Forneça o título e a descrição detalhada **juntos, em uma única caixa de texto**. A mensagem completa deve ser em inglês e seguir o padrão de "Conventional Commits".
+
+8.  **Atualização do Changelog:** Toda alteração de código (correção de bug, nova funcionalidade, refatoração, etc.) **deve** ser registrada no arquivo `changelog.md`. A entrada deve seguir o padrão de versão e formato existentes no arquivo.
